@@ -1,0 +1,82 @@
+/*# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY3VzdG9tLmNzcyIsInNvdXJjZXMiOlsiY3VzdG9tLnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiJ9 */
+
+/*# sourceMappingURL=custom.css.map */
+
+/*project Index */
+.project-infos {
+    margin-bottom: 15px;
+}
+.project-infos ul {
+    font-size: 14px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.project-infos ul li {
+    display: block;
+    line-height: 30px;
+    color: 
+    #4E4852;
+}
+
+.project-infos ul li i {
+    font-size: 15px;
+    min-width: 30px;
+}
+
+/*project Details */
+.ts-lt {
+    float: left;
+}
+.ts-rt {
+    float: right;
+}
+.ts-ct {
+    text-align: center;
+}
+.project-item{
+    margin-top: 20px;
+    margin-bottom: 23px;
+}
+
+.project-link {
+    border: 2px solid #09e5ab;
+    border-radius: 4px;
+    padding: 10px 15px !important;
+    text-align: center;
+    font-size: 15px;
+    color:#09e5ab;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+.table-form{
+    color: #272b41;
+    background-color: white;
+
+} 
+.table-center{
+    text-align: center;
+}
+
+
+/*to_do Index */
+.createzone{
+	border:2px dashed #6777ef;
+	cursor: pointer
+}
+
+.cz-message{
+	font-size:24px;
+ 	color:#34395e;
+ 	text-align: center;
+}
+
+.dark .createzone {
+    border: 2px dashed #96a2b4;
+	background: #353c48;
+}
+
+.dark .createzone .cz-message {
+    color: #96a2b4;
+}
