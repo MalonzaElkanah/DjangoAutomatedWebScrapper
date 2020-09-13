@@ -1,0 +1,563 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+
+<!-- index.html  21 Nov 2019 03:49:32 GMT -->
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+    <title>Malone | Data-Home</title>
+    <!-- General CSS Files -->
+    <link rel="stylesheet" href="{% static 'malone/css/app.min.css' %}">
+    <link rel="stylesheet" href="{% static 'malone/bundles/datatables/datatables.min.css' %}">
+    <link rel="stylesheet" href="{% static 'malone/bundles/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css' %}">
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="{% static 'malone/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'malone/css/components.css' %}">
+    <!-- Custom style CSS -->
+    <link rel="stylesheet" href="{% static 'malone/css/custom.css' %}">
+    <link rel='shortcut icon' type='image/x-icon' href='assets/img/favicon.ico' />
+</head>
+
+<body>
+    <div id="app">
+        <div class="main-wrapper main-wrapper-1">
+            
+            <!-- Main Content -->
+            <div class="pt-5 padding-20">
+                <section class="section">
+                    <div class="section-body">
+                        <div class="row">
+                            <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+                                <div class="card card-statistic-1">
+                                    <div class="card-icon l-bg-purple">
+                                        <i class="fas fa-code"></i>
+                                    </div>
+                                    <div class="card-wrap">
+                                        <div class="padding-20">
+                                            <div class="text-right">
+                                                <h3 class="font-light mb-0">
+                                                    <i class="ti-arrow-up text-success"></i>Data Sites
+                                                </h3>
+                                                <span class="text-muted">{{sites.count}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+                                <div class="card card-statistic-1">
+                                    <div class="card-icon l-bg-green">
+                                        <i class="fas fa-history"></i>
+                                    </div>
+                                    <div class="card-wrap">
+                                        <div class="padding-20">
+                                            <div class="text-right">
+                                                <h3 class="font-light mb-0">
+                                                    <i class="ti-arrow-up text-success"></i>Data Scrapper 
+                                                </h3>
+                                                <span class="text-muted">{{scrappers.count}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+                                <div class="card card-statistic-1">
+                                    <div class="card-icon l-bg-purple">
+                                        <i class="fas fa-code"></i>
+                                    </div>
+                                    <div class="card-wrap">
+                                        <div class="padding-20">
+                                            <div class="text-right">
+                                                <h3 class="font-light mb-0">
+                                                    <i class="ti-arrow-up text-success"></i>Scrapper Runs
+                                                </h3>
+                                                <span class="text-muted">{{runs.count}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+
+                            <div class="col-lg-8 col-md-12 col-12 col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4>Data Scrappers</h4>
+                                    </div>
+                                    <div class="card-body">
+                                          <div class="table-responsive">
+                                            <table class="table table-hover mb-0" id="table-1">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#scpr-id</th>
+                                                        <th>Site</th>
+                                                        <th>Select Tag</th>
+                                                        <th>Data Type</th>
+                                                        <th></th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% for scrapper in scrappers %}
+                                                    <tr>
+                                                        <td>#scpr-0{{scrapper.id}}</td>
+                                                        <td><a href="{{scrapper.url_scrapped}} ">
+                                                            {{scrapper.site.site_name}}
+                                                        </a></td>
+                                                        <td>{{scrapper.select_tag}}</td>
+                                                        <td>{{scrapper.data_type}}</td>
+                                                        <td>
+                                                            <a class="btn btn-success scrapSite" href="{% url 'scrap-site' %}" id="{{scrapper.id}}" title="Scrap Data"><i class="fas fa-play"></i></a>
+                                                        </td>
+                                                        <td>
+                                                            <a class="btn btn-danger btn-action" href="#" data-toggle="modal" data-target="#deletescrapperModal{{scrapper.id}}" title="delete"><i class="fas fa-trash"></i></a>
+                                                        </td>
+                                                    </tr>
+                                                {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    
+                            <div class="col-lg-4 col-md-12 col-12 col-sm-12">
+                                <!-- Support tickets -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4>Data Sites</h4>
+                                        <div class="card-header-action">
+                                          <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#newSiteModal">
+                                            <i class="fas fa-plus"></i>
+                                            Add Site
+                                          </a>
+                                        </div>
+                                    </div>
+
+                                    <div class="card-body">
+                                    {% for site in sites %}
+                                        <a href="#" data-toggle="modal" data-target="#siteModal{{site.id}}">
+                                            <div class="support-ticket media pb-1 mb-3">
+                                                <img src="{{site.logo.url}}" class="user-img mr-2" alt="" title="{{site.description}}">
+                                                <div class="media-body ml-3">
+                                                    <span class="font-weight-bold">{{site.site_name}}</span>
+                                                    <p class="my-1">{{site.category}}</p>
+                                                    <small class="text-muted">Added on <span class="font-weight-bold font-13">{{site.date_created.date}}</span></small>
+                                                </div>
+                                            
+                                            </div>
+                                        </a>
+                                    {% endfor %}
+                                    </div>
+                                    <a href="javascript:void(0)" class="card-footer card-link text-center small ">View
+                                          All</a>
+                                </div>
+                                      <!-- Support tickets -->
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-12 col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4>Scrapper Runs</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-striped" id="table-2">
+                                                <thead>
+                                                  <tr>
+                                                    <th class="text-center pt-3">
+                                                      #run-id
+                                                    </th>
+                                                    <th>Data Url</th>
+                                                    <th>Date Scrapped</th>
+                                                    <th>Site Scrapped</th>
+                                                    <th>Data Tpe</th>
+                                                    <th>Status</th>
+                                                    <th>Action</th>
+                                                  </tr>
+                                                </thead>
+                                                <tbody> 
+                                                {% for run in runs %}
+                                                  <tr>
+                                                    <td class="align-middle">
+                                                        <a href="#">
+                                                            #run-00{{run.id}}
+                                                        </a>
+                                                    </td>
+                                                    <td>
+                                                        <a href="{{run.data_url}}">{{run.data_name}}</a>
+                                                    </td>
+                                                    <td>{{run.date_scrapped.date}}</td>
+                                                    <td>{{run.scrapper.site.site_name}}</td>
+                                                    <td>{{run.scrapper.data_type}}</td>
+                                                    <td>
+                                                    {% if run.status == 'Completed' %}    
+                                                        <div class="badge badge-success badge-shadow">Completed</div>
+                                                    {% elif run.status == 'PROGRESS' %}
+                                                        <div class="badge badge-warning badge-shadow">In Progress</div>
+                                                    {% elif run.status == 'PENDING' %}
+                                                        <div class="badge badge-info badge-shadow">Todo</div>
+                                                    {% else %}
+                                                        <div class="badge badge-info badge-shadow">Todo</div>
+                                                    {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        <a class="btn btn-primary" href="#" data-toggle="modal" data-target="#scrapperRunDetailModal{{run.id}}" title="More Info"><i class="fas fa-info"></i></a>
+                                                        <a class="btn btn-danger btn-action" href="#" data-toggle="modal" data-target="#deleteScrapperRunModal{{run.id}}" title="delete"><i class="fas fa-trash"></i></a>
+                                                    </td>
+                                                  </tr>
+                                                {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            {% for site, form in forms.items %}
+                <div class="modal fade bd-example-modal-lg" id="siteModal{{site.id}}" tabindex="-1" role="dialog" aria-labelledby="formModal" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="formModal">Edit Site</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form class="editSiteForm" action="{% url 'update-site' %}" method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="id" value="{{site.id}}">
+                                    <div class="siteEdit-info">
+                                    {% for field in form %}
+                                        {% if field.is_hidden %}
+                                            {{field}}
+                                        {% elif field.name == 'site_name' %}
+                                        <div class="row form-row siteEdit-cont">
+                                            <div class="col-12 col-md-5">
+                                                <div class="form-group">
+                                                    <label>{{field.label}}</label>
+                                                    {{field}}
+                                                </div> 
+                                            </div>
+                                        {% elif field.name == 'category' %}
+                                            <div class="col-12 col-md-5">
+                                                <div class="form-group">
+                                                    <label>{{field.label}}</label>
+                                                    {{field}}
+                                                </div> 
+                                            </div>
+                                        </div>
+                                        {% elif field.name == 'logo' %}
+                                        <div class="row form-row siteEdit-cont">
+                                            <div class="col-12 col-md-5">
+                                                <div class="form-group">
+                                                    <label>{{field.label}}</label>
+                                                    {{field}}
+                                                </div> 
+                                            </div>
+                                        </div>
+                                        {% elif field.name == 'description' %}
+                                        <div class="row form-row siteEdit-cont">
+                                            <div class="col-12 col-md-10">
+                                                <div class="form-group">
+                                                    <label>{{field.label}}</label>
+                                                    {{field}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% for scrapper in site.my_scrappers %}    
+                                        <div class="row form-row siteEdit-cont">
+                                            <input type="hidden" name="id{{scrapper.id}}" value="{{scrapper.id}}">
+                                            <div class="col-12 col-md-5">
+                                                <div class="form-group">
+                                                    <label>Data Url</label>
+                                                    <input type="text" class="form-control" name="url_scrapped{{scrapper.id}}" value="{{scrapper.url_scrapped}}" required="">
+                                                </div> 
+                                            </div>
+                                            <div class="col-12 col-md-5" title="Enter the CSS selector for the element you are looking for. If 'id', add '#' before the name. If its a 'class', add '.' Example: '#Weather_data435' for id element or '.weather_data' for class element.">
+                                                <div class="form-group">
+                                                    <label>Select Tag</label>
+                                                    <input type="text" class="form-control" name="select_tag{{scrapper.id}}" value="{{scrapper.select_tag}}" required="">
+                                                </div> 
+                                            </div>
+                                            <div class="col-12 col-md-5">
+                                                <div class="form-group">
+                                                    <label>Data Type</label>
+                                                    <select id="id_data_type" name="data_type{{scrapper.id}}" class="form-control">
+                                                    {% if scrapper.data_type == 'TEXT' %}    
+                                                        <option value="TEXT" selected>Text</option>
+                                                        <option value="VIDEO">Video</option>
+                                                        <option value="IMAGE">Image</option>
+                                                    {% elif scrapper.data_type == 'IMAGE' %}
+                                                        <option value="TEXT">Text</option>
+                                                        <option value="VIDEO" selected>Video</option>
+                                                        <option value="IMAGE">Image</option>
+                                                    {% elif scrapper.data_type == 'VIDEO' %}
+                                                        <option value="TEXT">Text</option>
+                                                        <option value="VIDEO">Video</option>
+                                                        <option value="IMAGE" selected>Image</option>
+                                                    {% else %}
+                                                        <option value="TEXT" selected>Text</option>
+                                                        <option value="VIDEO">Video</option>
+                                                        <option value="IMAGE">Image</option>
+                                                    {% endif %}
+                                                    </select>
+                                                </div> 
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                    </div>
+                                    <div class="add-more">
+                                        <a href="javascript:void(0);" class="add-siteEdit"><i class="fa fa-plus-circle"></i> Add More</a>
+                                    </div>
+                                    <input type="hidden" name="form_numEdit" value="0">
+                                    <p id="countEdit" style="display: none;">0</p>
+
+                                    <button type="submit" class="btn btn-primary m-t-15 waves-effect">UPDATE</button>
+                                    <button type="button" class="btn btn-danger m-t-15 waves-effect" href="#" data-toggle="modal" data-target="#deleteSiteModal{{site.id}}">DELETE SITE</button>
+                                </form>
+                            </div>    
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+            {% for site in sites %}
+                <!-- Vertically Center -->
+                <div class="modal fade" id="deleteSiteModal{{site.id}}" tabindex="-1" role="dialog"
+                  aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalCenterTitle">Delete {{site.site_name}}</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                            ARE YOU SURE?
+                          </div>
+                          <div class="modal-footer bg-whitesmoke br">
+                            <button type="button" href="{% url 'delete-site' site.id %}" class="btn btn-danger deleteModal" id="{{site.id}}">Delete</button>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+            {% for scrapper in scrappers %}
+                <!-- Vertically Center -->
+                <div class="modal fade" id="deletescrapperModal{{scrapper.id}}" tabindex="-1" role="dialog"
+                  aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalCenterTitle">Delete {{scrapper.select_tag}}</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                            ARE YOU SURE?
+                          </div>
+                          <div class="modal-footer bg-whitesmoke br">
+                            <button type="button" href="{% url 'delete-scrapper' scrapper.id %}" class="btn btn-danger deleteModal" id="{{scrapper.id}}">Delete</button>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            {% for run in runs %}
+                <!-- Vertically Center -->
+                <div class="modal fade" id="deleteScrapperRunModal{{run.id}}" tabindex="-1" role="dialog"
+                  aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalCenterTitle">Delete Scrapped Data</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                            DELETE {{run.data_name}}?
+                          </div>
+                          <div class="modal-footer bg-whitesmoke br">
+                            <button type="button" href="{% url 'delete-run' run.id %}" class="btn btn-danger deleteModal" id="{{run.id}}">Delete</button>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            {% for run in runs %}
+                <!-- Modal with form -->
+                <div class="modal fade bd-example-modal-lg" id="scrapperRunDetailModal{{run.id}}" tabindex="-1" role="dialog" aria-labelledby="formModal" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="formModal">Data</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                            
+                                <div class="table-responsive">
+                                    <table class="table table-striped cvs-table" id="id-cvs-table">
+                                      <thead>
+                                            <tr>
+                                                <th>index</th>
+                                            {% for column in run.csv_column_count %}
+                                                <th>Column {{column}}</th>
+                                            {% endfor %}
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for i, data in run.csv_data %}
+                                            <tr>
+                                                <td>{{i}}</td>
+                                            {% for row in data %}  
+                                                <td class="text-center pt-2">{{row}}</td>
+                                            {% endfor %}
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+                <!-- Modal with form -->
+                <div class="modal fade bd-example-modal-lg" id="newSiteModal" tabindex="-1" role="dialog" aria-labelledby="formModal" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="formModal">New Site</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="id_newSiteForm" action="{% url 'create-site' %}" method="POST">
+                                    {% csrf_token %}
+                                    <div class="site-info">
+                                        <div class="row form-row site-cont">
+                                            <div class="col-12 col-md-5">
+                                                <div class="form-group">
+                                                    <label>Site Name</label>
+                                                    <input type="text" class="form-control" name="site_name" required="">
+                                                </div> 
+                                            </div>
+                                            <div class="col-12 col-md-5">
+                                                <div class="form-group">
+                                                    <label for="id_category">Category</label>
+                                                    <select id="id_category" name="category" class="form-control">
+                                                        <option value="General" selected>General</option>
+                                                        <option value="Bet Data" >Bet Data</option>
+                                                        <option value="Online Jobs" >Online Jobs</option>
+                                                        <option value="Jobs Appication" >Jobs Appication</option>
+                                                        <option value="Images">Images</option>
+                                                        <option value="Pandemic" >Pandemic</option>
+                                                        <option value="Test-File" >Test File</option>
+                                                    </select>
+                                                </div> 
+                                            </div>
+                                        </div>
+                                        <div class="row form-row site-cont">
+                                            <div class="col-12 col-md-5">
+                                                <div class="form-group">
+                                                    <label for="script_file">Logo</label>
+                                                    <input class="form-control" type="file" name="logo" id="script_file">
+                                                </div> 
+                                            </div>
+                                        </div>
+                                        <div class="row form-row site-cont">
+                                            <div class="col-12 col-md-10">
+                                                <div class="form-group">
+                                                    <label for="id_description">Description</label>
+                                                    <textarea class="form-control" id="id_description" name="description"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row form-row site-cont">
+                                            <div class="col-12 col-md-5">
+                                                <div class="form-group">
+                                                    <label>Data Url</label>
+                                                    <input type="text" class="form-control" name="url_scrapped_1" required="">
+                                                </div> 
+                                            </div>
+                                            <div class="col-12 col-md-5" title="Enter the CSS selector for the element you are looking for. If 'id', add '#' before the name. If its a 'class', add '.' Example: '#Weather_data435' for id element or '.weather_data' for class element.">
+                                                <div class="form-group">
+                                                    <label>Select Tag</label>
+                                                    <input type="text" class="form-control" name="select_tag_1" required="">
+                                                </div> 
+                                            </div>
+                                            <div class="col-12 col-md-2">
+                                                <label class="d-md-block d-sm-none d-none">&nbsp;</label>
+                                                <a href="#" class="btn btn-danger trash"><i class="far fa-trash-alt"></i></a>
+                                            </div>
+
+                                            <div class="col-12 col-md-5">
+                                                <div class="form-group">
+                                                    <label>Data Type</label>
+                                                    <select id="id_data_type" name="data_type_1" class="form-control">
+                                                        <option value="TEXT" selected>Text</option>
+                                                        <option value="VIDEO">Video</option>
+                                                        <option value="IMAGE">Image</option>
+                                                    </select>
+                                                </div> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="add-more">
+                                        <a href="javascript:void(0);" class="add-site"><i class="fa fa-plus-circle"></i> Add More</a>
+                                    </div>
+                                    <input type="hidden" name="form_num" value="1">
+                                    <p id="count" style="display: none;">1</p>
+
+                                    <button type="submit" class="btn btn-primary m-t-15 waves-effect">CREATE</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- General JS Scripts -->
+    <script src="{% static 'malone/js/app.min.js' %}"></script>
+    <!-- JS Libraies -->
+    <script src="{% static 'malone/bundles/datatables/datatables.min.js' %}"></script>
+    <script src="{% static 'malone/bundles/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js' %}"></script>
+    <!-- Page Specific JS File -->
+    <script src="{% static 'malone/js/page/index-data.js' %}"></script>
+    <!-- Template JS File -->
+    <script src="{% static 'malone/js/scripts.js' %}"></script>
+    <!-- Custom JS File -->
+    <script src="{% static 'malone/js/custom.js' %}"></script>
+    <script src="{% static 'malone/js/ajax.js' %}"></script>
+</body>
+
+
+<!-- index.html  12 Sep 2020 09:50:03 GMT -->
+</html>
